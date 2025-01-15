@@ -9,8 +9,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   
   <!-- SweetAlert2 CSS -->
-  <link rel="stylesheet" href="loding.css">
 
+  
   <style>
     body {
       font-family: 'PT Sans', sans-serif;
@@ -28,6 +28,62 @@
       font-weight: 700;
     }
   </style>
+
+  
+<!-- Loader pag ST Css -->  
+  <script>
+    window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader");
+  
+    loader.classList.add("loader--hidden");
+  
+    loader.addEventListener("transitionend", () => {
+      document.body.removeChild(loader);
+    });
+  });
+  </script>
+
+<style>
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333333;
+  transition: opacity 0.7s, visibility 0.75s;
+  z-index: 11;
+}
+
+.loader--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader::after {
+  content: "";
+  width: 75px;
+  height: 75px;
+  border: 15px solid #dddddd;
+  border-top-color: #009578;
+  border-radius: 50%;
+  animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+  </style>
+<!-- Loader pag End Css -->   
+
 </head>
 <body>
   <div class="loader"></div>
@@ -88,15 +144,40 @@
             <!-- Buttons -->
             <div class="d-flex justify-content-center gap-2">
               <button class="btn btn-success" onclick="getDetail()">Get Result</button>
-              <button class="btn btn-primary" onclick="printResult()">Print Result</button>
+
             </div>
           </div>
         </div>
 
         <!-- Result Section -->
-        <div class="card shadow-sm border-0 rounded-3">
-          <div class="card-body" id="result" style="min-height: 100%;"></div>
+        <div class="content" id="contentToSave">
+
+          <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body" id="result" style="min-height: 100%;"></div>
+          </div>
+
         </div>
+        <!-- save image START -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <script>
+          function saveAsJpg() {
+            const content = document.getElementById('contentToSave');
+            
+            // Capture the div content using html2canvas
+            html2canvas(content, { useCORS: true }).then(function(canvas) {
+              // Convert the canvas to a data URL in JPG format
+              const imageUrl = canvas.toDataURL("image/jpeg", 1.0); // 1.0 for high quality
+      
+              // Create an invisible link to trigger the download
+              const link = document.createElement('a');
+              link.href = imageUrl;
+              link.download = 'content-image.jpg'; // Default image filename
+              link.click(); // Trigger the download
+            });
+          }
+        </script>
+      <!-- save image START -->  
+        
       </div>
     </div>
   </div>
@@ -107,7 +188,7 @@
 
   <script>
     // Replace with your published Web App URL
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwesWpBqD8Za3K5vtj7d6GlrizAj-7_gU095ABZFJHFAGRq06d0cbAm-93cb42v7TUFqw/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzwpQ4zw2tzNjWnQeDD7b4lMjMCMtljlpLaLToj6ZCsOpcibVxNMRIxx95TOfaS1R5JRw/exec";
 
     function getDetail() {
       const phoneNumber       = document.getElementById("phoneNumber").value.trim();
@@ -145,20 +226,40 @@
         });
     }
 
-    // Print only the result section in an A4 format
-    function printResult() {
-      const printContents   = document.getElementById("result").innerHTML;
-      const originalContent = document.body.innerHTML;
-
-      document.body.innerHTML = printContents;
-      window.print();
-      document.body.innerHTML = originalContent;
-    }
   </script>
 
-  <script src="proc.js"></script>
+   <!-- watermark (start) -->
+  <style>
+    body {
+    position: relative;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .watermark {
+    position: fixed;
+    bottom: 10px; /* Adjust the bottom position */
+    margin-right: 2px;
+    right: 10px;
+    font-size: 20px; /* Reduced size of the watermark text */
+    color: rgba(0, 0, 0, 0.1); /* Light gray color with transparency */
+    pointer-events: none; /* Ensures the watermark doesn't block any clickable elements */
+    font-weight: bold;
+    z-index: 9999; /* Ensures the watermark stays on top */
+    user-select: none; /* Prevents text selection */
+  }
+  
+  </style>
+  <div class="watermark">Developed by Subeesh</div>
+   <!-- watermark (end) -->
 </body>
 
+ <!-- Date Script (st) -->
 <script>
     // date script
     function formatDateInput(input) {
@@ -178,4 +279,5 @@
     }
     
     </script>
+  <!-- Date Script (st) -->  
 </html>
