@@ -1,0 +1,31 @@
+<div class="mb-4">
+    <label for="examDate" class="form-label fw-bold">Date of Birth</label>
+    <input
+      type="text"
+      class="form-control"
+      id="examDate"
+      placeholder="MM.DD.YYYY"
+      onfocus="(this.type='date')"
+      onblur="formatDateInput(this)"
+    />
+  </div>
+  
+
+<script>
+function formatDateInput(input) {
+  const dateValue = input.value; // Get the selected date in YYYY-MM-DD format
+  if (!dateValue) {
+    input.type = 'text'; // Revert to text type if no value selected
+    return;
+  }
+
+  // Convert YYYY-MM-DD to MM.DD.YYYY format
+  const [year, month, day] = dateValue.split("-");
+  const formattedDate = `${month}.${day}.${year}`;
+
+  // Replace the input value with the formatted date and reset type
+  input.type = 'text';
+  input.value = formattedDate;
+}
+
+</script>
